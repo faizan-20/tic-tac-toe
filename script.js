@@ -17,6 +17,8 @@ const GameBoard = (() => {
     
         form.addEventListener('submit', (event) => {
             event.preventDefault();
+            Players[0] = p1.value;
+            Players[1] = p2.value;
             startGame();
         });
     };
@@ -66,7 +68,7 @@ const startGame = () => {
 };
 
 const GameLogic = () => {
-    let result = 2;
+    let result = -1;
     if(GameBoard.gameBoard[0] == 'X' & GameBoard.gameBoard[1] == 'X' & GameBoard.gameBoard[2] == 'X'){
         result = 0;
     }
@@ -114,8 +116,6 @@ const GameLogic = () => {
     }
     else if(GameBoard.gameBoard[2] == 'O' & GameBoard.gameBoard[4] == 'O' & GameBoard.gameBoard[6] == 'O'){
         result = 1;
-    }else{
-        result = -1;
     }
     return result;
 };
@@ -125,8 +125,6 @@ const stopGame = () => {
     restartBtn.textContent = 'Restart';
     btn.appendChild(restartBtn);
     restartBtn.addEventListener('click', () => {
-        p1.value = '';
-        p2.value = '';
         
         GameBoard.gameBoard = ['', '', '', '', '', '', '', '', ''];
         restartBtn.remove();
@@ -137,6 +135,7 @@ const stopGame = () => {
         
         renderBoard();
         GameBoard.getPlayers();
+        startGame();
     })
 }
 

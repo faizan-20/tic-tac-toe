@@ -45,9 +45,10 @@ input {
 #square {
     height: 100px;
     min-width: 100px;
-    border: 2px solid #274156;
+    border: 2px solid #605856;
     color: #605856;
-    flex: 0.2;
+    background-color: #FBFCFF;
+    flex: 0.1;
 }
 
 #row {
@@ -72,6 +73,10 @@ button {
     border-radius: 5px;
 }
 
+button:hover{
+    background-color: #15466e;
+}
+
 #subBtn {
     margin-top: 10px;
 }
@@ -82,6 +87,10 @@ button {
     justify-content: center;
     font-weight: 1000;
     font-size: 4rem;
+}
+
+#square:hover {
+    background-color: #1c6e8c4f;
 }
 
 .message {
