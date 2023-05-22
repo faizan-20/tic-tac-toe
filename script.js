@@ -1,80 +1,72 @@
 const p1 = document.querySelector('#player-1');
 const p2 = document.querySelector('#player-2');
 const message = document.querySelector('.message');
+const boxes = document.querySelectorAll('#square');
+const restartBtn = document.createElement('button');
+const btn = document.querySelector('.btn');
+let Players = ['Player 1', 'Player 2'];
+boxes.forEach((box) => {
+    box.style.visibility = 'hidden';
+});
 
 const GameBoard = (() => {
     let gameBoard = ['', '', '', '', '', '', '', '', ''];
-    let Players = [];
 
     const getPlayers = () => {
         const form = document.querySelector('.form');
     
         form.addEventListener('submit', (event) => {
             event.preventDefault();
-            Players.push(Player(p1.value));
-            Players.push(Player(p2.value));
-            StartGame.startGame();
+            startGame();
         });
     };
 
-    return {getPlayers, gameBoard, Players}
+    return {getPlayers, gameBoard}
 })();
 
-const Player = (name) =>{
-    let playerName = name;
-    return {playerName}
-}
 
-
-const RenderBoard = (() => {
-    const boxes = document.querySelectorAll('#square');
-    const render = () => {
+const renderBoard = () => {
         boxes.forEach((square) => {
                 let index = square.getAttribute('data-index');
                 let mark = GameBoard.gameBoard[index];
                 square.textContent = mark;
         });
-    }
-    return {render}
-})();
+};
 
-const StartGame = (() => {
-    const boxes = document.querySelectorAll('#square');
-
-    const startGame = () => {
-        let i = 0;
-        let result = -1;
-        boxes.forEach((square) => {
-            let index = square.getAttribute('data-index');
+const startGame = () => {
+    let i = 0;
+    let result;
+    boxes.forEach((square) => {
+        square.style.visibility = 'visible';
+        let index = square.getAttribute('data-index');
     
-            square.addEventListener('click', () => {
-                if (GameBoard.gameBoard[index] === ''){
-                    if (i%2 === 0){
-                        GameBoard.gameBoard[index] = 'X';
-                    }else{
-                        GameBoard.gameBoard[index] = 'O';
-                    }
-                    i++; 
+        square.addEventListener('click', () => {
+            if (GameBoard.gameBoard[index] === ''){
+                if (i%2 === 0){
+                    GameBoard.gameBoard[index] = 'X';
+                }else{
+                    GameBoard.gameBoard[index] = 'O';
                 }
-                RenderBoard.render();
-                result =  GameLogic();
-                if (result === 0){
-                    message.textContent = `${GameBoard.Players[0].playerName} Won`;
-                    stopGame();
-                }
-                if (result === 1){
-                    message.textContent = `${GameBoard.Players[1].playerName} Won`;
-                    stopGame();
-                }
-            });
+                i++; 
+            }
+            renderBoard();
+            result =  GameLogic();
+            if (result === 0){
+                message.textContent = `${Players[0]} Won`;
+                stopGame();
+                i = 0;
+            }
+            if (result === 1){
+                message.textContent = `${Players[1]} Won`;
+                stopGame();
+                i = 0;
+            }
         });
-    }
-
-    return {startGame}
-})();
+    });
+};
 
 const GameLogic = () => {
-    let result = -1;
+    let result = 2;
     if(GameBoard.gameBoard[0] == 'X' & GameBoard.gameBoard[1] == 'X' & GameBoard.gameBoard[2] == 'X'){
         result = 0;
     }
@@ -122,27 +114,29 @@ const GameLogic = () => {
     }
     else if(GameBoard.gameBoard[2] == 'O' & GameBoard.gameBoard[4] == 'O' & GameBoard.gameBoard[6] == 'O'){
         result = 1;
+    }else{
+        result = -1;
     }
     return result;
 };
 
 const stopGame = () => {
-    const restartBtn = document.createElement('button');
-    const btn = document.querySelector('.btn');
     restartBtn.classList.add('restart');
     restartBtn.textContent = 'Restart';
     btn.appendChild(restartBtn);
     restartBtn.addEventListener('click', () => {
         p1.value = '';
         p2.value = '';
-        GameBoard.player1 = '';
-        GameBoard.player2 = '';
         
         GameBoard.gameBoard = ['', '', '', '', '', '', '', '', ''];
-        RenderBoard.render();
-        GameBoard.Players = [];
         restartBtn.remove();
-        message.remove();
+        message.textContent = '';
+        boxes.forEach((box) => {
+            box.style.visibility = 'hidden';
+        });
+        
+        renderBoard();
+        GameBoard.getPlayers();
     })
 }
 
