@@ -38,6 +38,7 @@ const renderBoard = () => {
 const startGame = () => {
     let i = 0;
     let result;
+    let end = 0;
     boxes.forEach((square) => {
         square.style.visibility = 'visible';
         let index = square.getAttribute('data-index');
@@ -50,6 +51,7 @@ const startGame = () => {
                     GameBoard.gameBoard[index] = 'O';
                 }
                 i++; 
+                end++;
             }
             renderBoard();
             result =  GameLogic();
@@ -60,6 +62,11 @@ const startGame = () => {
             }
             if (result === 1){
                 message.textContent = `${Players[1]} Won`;
+                stopGame();
+                i = 0;
+            }
+            if(end === 9){
+                message.textContent = "Its a tie";
                 stopGame();
                 i = 0;
             }
