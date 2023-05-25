@@ -59,16 +59,19 @@ const startGame = () => {
                 message.textContent = `${Players[0]} Won`;
                 stopGame();
                 i = 0;
+                end = 0;
             }
             if (result === 1){
                 message.textContent = `${Players[1]} Won`;
                 stopGame();
                 i = 0;
+                end = 0;
             }
             if(end === 9){
                 message.textContent = "Its a tie";
                 stopGame();
                 i = 0;
+                end = 0;
             }
         });
     });
